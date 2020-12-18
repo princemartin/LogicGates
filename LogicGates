@@ -1,0 +1,163 @@
+import java.awt.*;
+import javax.swing.*;
+import java.awt.event.*;
+
+class LogicGatesGUI extends JFrame implements ItemListener {
+   JLabel lainput, lbinput, label,result;
+   JTextField tres;
+   JComboBox cbLogic,ta,tb;
+   Container c = getContentPane();
+   boolean a,b;
+   String res;
+   String aInput[] = {"true", "false"};
+   String bInput[] = {"true", "false"};
+   String optrs[] = {"Buffer", "Inverter(NOT Gate)", "2 Input AND-Gate", "2 Input NAND-Gate", "2 Input OR-Gate", "2 Input NOR-Gate", "2 Input EX-OR-Gate", "2 Input EX-NOR-Gate"};
+   
+   public LogicGatesGUI()
+   {
+      super("Logic Gates");
+      lainput = new JLabel("Enter Input(A): ");
+      lbinput = new JLabel("Enter input(B): ");
+      label = new JLabel("Select Logic Gate ");
+      result = new JLabel("Output(Y): ");
+      
+      ta = new JComboBox(aInput);
+      ta.addItemListener(this);
+      tb = new JComboBox(bInput);
+      tb.addItemListener(this);
+      tres = new JTextField(10); 
+      tres.setEditable(false);
+      
+      cbLogic = new JComboBox(optrs); cbLogic.addItemListener(this);
+      c.setLayout(new GridLayout(4, 2));
+      c.add(label);
+      c.add(cbLogic);
+      c.add(lainput); c.add(ta);
+      c.add(lbinput); c.add(tb);
+      c.add(result);
+      c.add(tres);
+      
+      setSize(500, 400);
+      setDefaultCloseOperation(EXIT_ON_CLOSE);
+      setResizable(false);
+      setVisible(true);
+            
+     
+    }
+
+        public void	itemStateChanged(ItemEvent ie)   {
+      
+      LogicGates lg = new LogicGates();
+      
+      if(ta.getSelectedIndex()==0)
+      {
+         a=true;
+      }
+      else
+      {
+       a=false;
+      }  
+      if(tb.getSelectedIndex()==0)
+      {
+         b=true;
+      }
+      else
+      {
+         b=false;
+      }
+               
+      if(cbLogic.getSelectedIndex()==0 || cbLogic.getSelectedIndex()==1){
+         tb.setEnabled(false);
+         if(cbLogic.getSelectedIndex()==0)
+         {
+            res= lg.buffer(a)+"";
+         }
+         else if(cbLogic.getSelectedIndex()==1)
+         {
+            res= lg.inverter(a)+"";
+         }
+        }
+      else
+      {
+         tb.setEnabled(true);
+        if(cbLogic.getSelectedIndex()==2)
+         res = lg.twoInputAND(a,b)+"";
+      else if(cbLogic.getSelectedIndex()==3)
+         res = lg.twoInputNAND(a,b)+"";
+      else if(cbLogic.getSelectedIndex()==4)
+         res = lg.twoInputOR(a,b)+"";
+      else if(cbLogic.getSelectedIndex()==5)
+         res = lg.twoInputNOR(a,b)+"";
+      else if(cbLogic.getSelectedIndex()==6)
+         res = lg.twoInputEXOR(a,b)+"";
+      else if(cbLogic.getSelectedIndex()==7)
+         res = lg.twoInputEXNOR(a,b)+"";
+       }
+       tres.setText(res+"");
+       repaint();   
+   }
+   }//end of class
+ //==============================================
+ 
+class LogicGates{
+   public boolean buffer(boolean a){
+      if(a==true)
+         return true;
+      else
+         return false;
+   }
+   public boolean inverter(boolean a){
+      if(a==true)
+         return false;
+      else
+         return true;
+   }
+   public boolean twoInputAND(boolean a, boolean b){
+      if(a==true && b==true)
+         return true; 
+      else
+         return false;
+   }
+   public boolean twoInputNAND(boolean a, boolean b){
+      
+      if(a==true && b==true)
+         return false; 
+      else
+         return true;
+   }
+   public boolean twoInputOR(boolean a, boolean b){
+        
+      if(a==false && b==false)
+         return false; 
+      else
+         return true;
+   }
+    public boolean twoInputNOR(boolean a, boolean b){
+      if(a==false && b==false)
+         return true; 
+      else
+         return false;
+   }
+    public boolean twoInputEXOR(boolean a, boolean b){
+      if( (a==false && b==false) || (a==true && b==true))
+         return false; 
+      else
+         return true;
+   }
+     public boolean twoInputEXNOR(boolean a, boolean b){
+      if( (a==false && b==false) || (a==true && b==true))
+         return true; 
+      else
+         return false;
+   }
+ 
+}//end of class
+ //==========================================  
+
+public class LogicGatesDemo
+{
+   public static void main(String args[])
+   {
+      LogicGatesGUI logic = new LogicGatesGUI();
+   }
+}
